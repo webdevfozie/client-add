@@ -142,21 +142,14 @@
 
           <div class="select-wrap">
             <select
-              :class="{'border-red': $v.clientData.doctor.$error}"
-              @blur="$v.clientData.doctor.$touch()"
               v-model.trim="clientData.doctor"
               class="input-text select">
-              <option value="" disabled selected>Лечащий врач*</option>
+              <option value="" disabled selected>Лечащий врач</option>
               <option value="ivanov">Иванов</option>
               <option value="zakharov">Захаров</option>
               <option value="chernishova">Чернышева</option>
             </select>
             <i class="material-icons select-expand">expand_more</i>
-          </div>
-          <div 
-            v-if="$v.clientData.doctor.$error" 
-            class="error">
-            Необходимо выбрать врача!
           </div>
         </div>
 
@@ -416,9 +409,6 @@ export default {
         numeric,
       },
       clientGroup: {
-        required,
-      },
-      doctor: {
         required,
       },
       city: {
