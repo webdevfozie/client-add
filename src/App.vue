@@ -13,57 +13,44 @@
       <div v-show="step === 1">
         <h3 class="step-title">Личные данные</h3>
         <div class="inputs">
+
           <input
             v-model.trim="clientData.surName"
-            :class="{
-              'border-red': $v.clientData.surName.$error,
-            }"
+            :class="{'border-red': $v.clientData.surName.$error}"
             @blur="$v.clientData.surName.$touch()"
             class="input-text"
             type="text"
-            placeholder="Фамилия*"
-          />
-
-          <div
-            v-if="
-              $v.clientData.surName.$dirty && !$v.clientData.surName.required
-            "
-            class="error"
-          >
+            placeholder="Фамилия*"/>
+          <div 
+            v-if="$v.clientData.surName.$dirty && !$v.clientData.surName.required"
+            class="error">
             Необходимо заполнить поле!
           </div>
           <div
-            v-else-if="
-              $v.clientData.surName.$dirty && !$v.clientData.surName.alpha
-            "
-            class="error"
-          >
+            v-else-if="$v.clientData.surName.$dirty && !$v.clientData.surName.alpha"
+            class="error">
             Допускаются только буквы!
           </div>
 
           <input
             type="text"
-            :class="{
-              'border-red': $v.clientData.name.$error,
-            }"
+            :class="{'border-red': $v.clientData.name.$error}"
             @blur="$v.clientData.name.$touch()"
             v-model.trim="clientData.name"
             class="input-text"
             placeholder="Имя*"
           />
-
           <div
             v-if="$v.clientData.name.$dirty && !$v.clientData.name.required"
-            class="error"
-          >
+            class="error">
             Необходимо заполнить поле!
           </div>
           <div
             v-else-if="$v.clientData.name.$dirty && !$v.clientData.name.alpha"
-            class="error"
-          >
+            class="error">
             Допускаются только буквы!
           </div>
+
           <input
             type="text"
             v-model.trim="clientData.patronymic"
@@ -73,9 +60,7 @@
 
           <input
             type="text"
-            :class="{
-              'border-red': $v.clientData.dateOfBirth.$error,
-            }"
+            :class="{'border-red': $v.clientData.dateOfBirth.$error}"
             @blur="$v.clientData.dateOfBirth.$touch()"
             v-model.trim="clientData.dateOfBirth"
             onfocus="(this.type='date')"
@@ -83,8 +68,9 @@
             class="input-text input"
             placeholder="Дата рождения*"
           />
-
-          <div v-if="$v.clientData.dateOfBirth.$error" class="error">
+          <div 
+            v-if="$v.clientData.dateOfBirth.$error" 
+            class="error">
             Необходимо заполнить поле!
           </div>
 
@@ -100,47 +86,31 @@
           />
           <div
             v-if="$v.clientData.phone.$dirty && !$v.clientData.phone.required"
-            class="error"
-          >
+            class="error">
             Необходимо заполнить поле!
           </div>
           <div
-            v-else-if="
-              $v.clientData.phone.$dirty &&
-              !($v.clientData.phone.$model[0] == 7)
-            "
-            class="error"
-          >
+            v-else-if="$v.clientData.phone.$dirty 
+            && !($v.clientData.phone.$model[0] == 7)"
+            class="error">
             Номер должен начинаться с цифры 7!
           </div>
           <div
-            v-else-if="
-              $v.clientData.phone.$dirty && !$v.clientData.phone.numeric
-            "
-            class="error"
-          >
+            v-else-if="$v.clientData.phone.$dirty && !$v.clientData.phone.numeric"
+            class="error">
             Номер должен состоять только из цифр!
           </div>
           <div
-            v-else-if="
-              $v.clientData.phone.$dirty && !$v.clientData.phone.maxLength
-            "
-            class="error"
-          >
-            Номер должен состоять из
-            {{ $v.clientData.phone.$params.maxLength.max }} цифр!
+            v-else-if="$v.clientData.phone.$dirty && !$v.clientData.phone.maxLength"
+            class="error">
+            Номер должен состоять из {{$v.clientData.phone.$params.maxLength.max}} цифр!
           </div>
           <div
-            v-else-if="
-              $v.clientData.phone.$dirty && !$v.clientData.phone.minLength
-            "
-            class="error"
-          >
-            Номер должен состоять из
-            {{ $v.clientData.phone.$params.minLength.min }} цифр!
+            v-else-if="$v.clientData.phone.$dirty 
+            && !$v.clientData.phone.minLength"
+            class="error">
+            Номер должен состоять из {{$v.clientData.phone.$params.minLength.min}} цифр!
           </div>
-
-          <!-- Добавить валидацию -->
 
           <div class="select-wrap">
             <select v-model.trim="clientData.gender" class="input-text select">
@@ -153,13 +123,10 @@
 
           <div class="select-wrap">
             <select
-              :class="{
-                'border-red': $v.clientData.clientGroup.$error,
-              }"
+              :class="{'border-red': $v.clientData.clientGroup.$error}"
               @blur="$v.clientData.clientGroup.$touch()"
               v-model.trim="clientData.clientGroup"
-              class="input-text select"
-            >
+              class="input-text select">
               <option value="" disabled selected>Группа клиентов*</option>
               <option value="vip">VIP</option>
               <option value="problem">Проблемные</option>
@@ -167,20 +134,18 @@
             </select>
             <i class="material-icons select-expand">expand_more</i>
           </div>
-
-          <div v-if="$v.clientData.clientGroup.$error" class="error">
+          <div 
+            v-if="$v.clientData.clientGroup.$error" 
+            class="error">
             Необходимо выбрать группу!
           </div>
 
           <div class="select-wrap">
             <select
-              :class="{
-                'border-red': $v.clientData.doctor.$error,
-              }"
+              :class="{'border-red': $v.clientData.doctor.$error}"
               @blur="$v.clientData.doctor.$touch()"
               v-model.trim="clientData.doctor"
-              class="input-text select"
-            >
+              class="input-text select">
               <option value="" disabled selected>Лечащий врач*</option>
               <option value="ivanov">Иванов</option>
               <option value="zakharov">Захаров</option>
@@ -188,43 +153,48 @@
             </select>
             <i class="material-icons select-expand">expand_more</i>
           </div>
-
-          <div v-if="$v.clientData.doctor.$error" class="error">
+          <div 
+            v-if="$v.clientData.doctor.$error" 
+            class="error">
             Необходимо выбрать врача!
           </div>
         </div>
+
         <div class="checkbox">
           <input type="checkbox" v-model.trim="clientData.nSms" id="sms" />
           <label for="sms">Не отправлять СМС</label>
         </div>
+
       </div>
 
       <div v-show="step === 2">
         <h3 class="step-title">Адрес проживания</h3>
         <div class="inputs">
+
           <input
             type="text"
             v-model.trim="clientData.index"
             class="input-text"
             placeholder="Индекс"
           />
+
           <input
             type="text"
             v-model.trim="clientData.country"
             class="input-text"
             placeholder="Страна"
           />
+
           <input
             type="text"
             v-model.trim="clientData.region"
             class="input-text"
             placeholder="Область"
           />
+
           <input
             type="text"
-            :class="{
-              'border-red': $v.clientData.city.$error,
-            }"
+            :class="{'border-red': $v.clientData.city.$error}"
             @blur="$v.clientData.city.$touch()"
             v-model.trim="clientData.city"
             class="input-text"
@@ -234,33 +204,34 @@
           <div v-if="$v.clientData.city.$error" class="error">
             Необходимо выбрать город!
           </div>
+
           <input
             type="text"
             v-model.trim="clientData.street"
             class="input-text"
             placeholder="Улица"
           />
+
           <input
             type="text"
             v-model.trim="clientData.house"
             class="input-text"
             placeholder="Дом"
           />
+
         </div>
       </div>
 
       <div v-show="step === 3">
         <h3 class="step-title">Документ</h3>
         <div class="inputs">
+
           <div class="select-wrap">
             <select
-              :class="{
-                'border-red': $v.clientData.document.$error,
-              }"
+              :class="{'border-red': $v.clientData.document.$error}"
               @blur="$v.clientData.document.$touch()"
               v-model.trim="clientData.document"
-              class="input-text select"
-            >
+              class="input-text select">
               <option value="" disabled selected>Тип документа*</option>
               <option value="pasport">Паспорт</option>
               <option value="bc">Свидетельство о рождении</option>
@@ -268,32 +239,36 @@
             </select>
             <i class="material-icons select-expand">expand_more</i>
           </div>
-          <div v-if="$v.clientData.document.$error" class="error">
+          <div 
+            v-if="$v.clientData.document.$error" 
+            class="error">
             Необходимо выбрать тип документа!
           </div>
+
           <input
             type="text"
             v-model.trim="clientData.dSeries"
             class="input-text"
             placeholder="Серия"
           />
+
           <input
             type="text"
             v-model.trim="clientData.dNumber"
             class="input-text"
             placeholder="Номер"
           />
+
           <input
             type="text"
             v-model.trim="clientData.dIssued"
             class="input-text"
             placeholder="Кем Выдан"
           />
+
           <input
             type="text"
-            :class="{
-              'border-red': $v.clientData.dDateIssue.$error,
-            }"
+            :class="{'border-red': $v.clientData.dDateIssue.$error}"
             @blur="$v.clientData.dDateIssue.$touch()"
             v-model.trim="clientData.dDateIssue"
             onfocus="(this.type='date')"
@@ -304,33 +279,39 @@
           <div v-if="$v.clientData.dDateIssue.$error" class="error">
             Необходимо заполнить поле!
           </div>
+
         </div>
+
         <Complete
           v-if="isComplete"
           v-on:close-complete="hideComplete()"
           v-on:click-db="msg()"
           v-on:click-create-more="clearForm()"
         />
+
       </div>
 
       <div class="button-wrap">
+
         <button type="button" class="btn-prev button" @click="prevStep">
           <i class="material-icons prev">navigate_before</i>
           Назад
         </button>
+
         <button
           v-if="step === 3"
           @click.prevent="submitForm()"
           type="button"
-          class="btn-next button"
-        >
+          class="btn-next button">
           Создать клиента
           <i class="material-icons next">navigate_next</i>
         </button>
+
         <button v-else type="button" class="btn-next button" @click="nextStep">
           Далее
           <i class="material-icons next">navigate_next</i>
         </button>
+
       </div>
     </form>
   </div>
@@ -338,12 +319,13 @@
 
 <script>
 import {
-  required,
-  minLength,
-  maxLength,
-  helpers,
+  required, 
+  minLength, 
+  maxLength, 
+  helpers, 
   numeric,
-} from "vuelidate/lib/validators";
+  } 
+from "vuelidate/lib/validators";
 import Complete from "@/components/Complete";
 const alpha = helpers.regex("alpha", /^[a-zA-Zа-яёА-ЯЁ]*$/);
 
@@ -455,11 +437,6 @@ export default {
 
 <style lang="sass">
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap')
-.base-div
-  transition: 1s
-  opacity: 0
-.active
-  opacity: 1
 
 #app
   position: relative
@@ -511,14 +488,17 @@ export default {
   top: 50%
   right: 270px
   transform: translateY(-50%)
+  cursor: pointer
 
 .select
   appearance: none
   color: #666
+  cursor: pointer
   &:focus
     color: #000
     & + .select-expand
       color: #000
+      cursor: pointer
 
 .input-text
   margin: 12px 0
@@ -549,7 +529,6 @@ export default {
     line-height: 24px
 
 // Кнопки
-
 .button-wrap
   width: 66%
   margin-top: 40px
@@ -565,16 +544,14 @@ export default {
   display: flex
   align-items: center
   transition: 0.2s
-  &:hover
-    opacity: 0.8
-    box-shadow: 1px 1px 15px rgba(0, 0, 0, 0.2)
-  &:active
-    box-shadow: 0px 0px 0px
 
 .btn-prev
   width: 40%
   background: #e8e8ea
-  color: #000
+  color: rgba(#1A1A2B, 0.8)
+  &:hover
+    background: rgba(#1A1A2B, 0.15)
+    color: rgba(#1A1A2B, 1)
 
 .btn-next
   width: 50%
@@ -584,6 +561,10 @@ export default {
   padding-right: 16px
   display: flex
   justify-content: space-between
+  border: 1px solid #0796E5
+  &:hover
+    background: rgba(#0796E5, 0.1)
+    color: #0796E5
 
 // Классы сообщений
 .border-red
@@ -600,8 +581,8 @@ export default {
   height: 20px
   color: #FF8484
   background: url(./assets/icons/nf-error.svg) no-repeat left center
-// Медиа-запросы
 
+// Медиа-запросы
 @media (max-width: 768px)
   .button-wrap
     width: 100%
@@ -632,4 +613,5 @@ export default {
     text-align: center
   #app
     padding: 0 20px 20px
+
 </style>
