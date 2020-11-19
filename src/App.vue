@@ -64,14 +64,22 @@
             @blur="$v.clientData.dateOfBirth.$touch()"
             v-model.trim="clientData.dateOfBirth"
             onfocus="(this.type='date')"
-            onblur="(this.type='text')"
             class="input-text input"
             placeholder="Дата рождения*"
           />
+
           <div 
             v-if="$v.clientData.dateOfBirth.$error" 
             class="error">
             Необходимо заполнить поле!
+          </div>
+
+          <div 
+            v-else-if="$v.clientData.dateOfBirth.$dirty 
+              && !($v.clientData.dateOfBirth.$model <= new Date().toISOString().slice(0, 10)
+              && $v.clientData.dateOfBirth.$model >= '1920-01-01')"
+            class="error">
+            Поле заполнено не корректно!
           </div>
 
           <input
@@ -126,7 +134,8 @@
               :class="{'border-red': $v.clientData.clientGroup.$error}"
               @blur="$v.clientData.clientGroup.$touch()"
               v-model.trim="clientData.clientGroup"
-              class="input-text select">
+              multiple 
+              class="input-text select select-multiple">
               <option value="" disabled selected>Группа клиентов*</option>
               <option value="vip">VIP</option>
               <option value="problem">Проблемные</option>
@@ -242,14 +251,14 @@
             type="text"
             v-model.trim="clientData.dSeries"
             class="input-text"
-            placeholder="Серия"
+            placeholder="Серия документа"
           />
 
           <input
             type="text"
             v-model.trim="clientData.dNumber"
             class="input-text"
-            placeholder="Номер"
+            placeholder="Номер документа"
           />
 
           <input
@@ -273,6 +282,14 @@
             Необходимо заполнить поле!
           </div>
 
+          <div 
+            v-else-if="$v.clientData.dDateIssue.$dirty 
+              && !($v.clientData.dDateIssue.$model <= new Date().toISOString().slice(0, 10)
+              && $v.clientData.dDateIssue.$model >= '1920-01-01')"
+            class="error">
+            Поле заполнено не корректно!
+          </div>
+
         </div>
 
         <Complete
@@ -283,6 +300,8 @@
         />
 
       </div>
+
+      <div v-if="isNotValid" class="not-valid">Форма заполнена неверно!</div>
 
       <div class="button-wrap">
 
@@ -314,13 +333,14 @@
 import {
   required, 
   minLength, 
-  maxLength, 
+  maxLength,
   helpers, 
   numeric,
   } 
 from "vuelidate/lib/validators";
 import Complete from "@/components/Complete";
 const alpha = helpers.regex("alpha", /^[a-zA-Zа-яёА-ЯЁ]*$/);
+
 
 export default {
   components: {
@@ -331,6 +351,7 @@ export default {
     return {
       step: 1,
       isComplete: false,
+      isNotValid: false,
       clientData: {
         surName: "",
         name: "",
@@ -338,7 +359,7 @@ export default {
         dateOfBirth: "",
         phone: "",
         gender: "",
-        clientGroup: "",
+        clientGroup: [],
         doctor: "",
         nSms: "",
         index: "",
@@ -365,6 +386,7 @@ export default {
     prevStep() {
       if (this.step > 1) {
         this.step--;
+        this.isNotValid = false;
       }
     },
     hideComplete() {
@@ -376,7 +398,7 @@ export default {
     submitForm() {
       if (this.$v.$invalid) {
         this.$v.$touch();
-        alert("Форма заполнена неверно!");
+        this.isNotValid = true;
         return;
       } else {
         this.isComplete = true;
@@ -427,6 +449,9 @@ export default {
 
 <style lang="sass">
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap')
+
+*:active, *:focus 
+  outline: none
 
 #app
   position: relative
@@ -484,21 +509,32 @@ export default {
   appearance: none
   color: #666
   cursor: pointer
+  transition: 0.3s
   &:focus
     color: #000
+    border: 1px solid #000
     & + .select-expand
       color: #000
       cursor: pointer
 
+.select-multiple
+  height: 100%
+  & + .select-expand
+      display: none
+
 .input-text
   margin: 12px 0
-  height: 72px
   width: 66%
   border: 1px solid #EAEAEA
   border-radius: 4px
   padding: 24px
   line-height: 24px
   box-sizing: border-box
+  transition: 0.3s
+
+.input-text:focus
+  color: #000
+  border: 1px solid #000
 
 .inputs:last-child
   margin-bottom: 0
@@ -572,6 +608,13 @@ export default {
   color: #FF8484
   background: url(./assets/icons/nf-error.svg) no-repeat left center
 
+.not-valid
+  height: 20px
+  color: #FF8484
+  margin-left: 20px
+  margin-top: 20px
+  font-size: 1.3rem
+  font-weight: 700
 // Медиа-запросы
 @media (max-width: 768px)
   .button-wrap
@@ -580,11 +623,10 @@ export default {
     width: 100%
   .input-text
     width: 100%
-  .button-wrap
-    & .btn-prev
-      width: 45%
-    & .btn-next
-      width: 45%
+  .btn-prev
+    width: 45%
+  .btn-next
+    width: 45%
   .select-expand
     right: 20px
   #app
@@ -593,15 +635,28 @@ export default {
 @media (max-width: 370px)
   .prev, .next
     display: none
-  .btn-prev, .btn-next
+  .btn-prev, 
     display: flex
     justify-content: center
-  .button-wrap .btn-next
-    padding: 0
+    padding: 0 10px 0 0
+    width: 40%
+  .btn-next
     display: flex
     justify-content: center
-    text-align: center
+    padding-left: 10px
+    padding-right: 5px
+    width: 50%
+  // .button-wrap .btn-next
+  //   padding: 0
+  //   display: flex
+  //   justify-content: center
+  //   text-align: center
   #app
     padding: 0 20px 20px
+  .not-valid
+    text-align: center
+    margin-top: 20px
+    margin-left: 0
+    font-size: 1.1rem
 
 </style>
